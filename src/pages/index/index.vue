@@ -1,25 +1,13 @@
 <template>
-  <div class="container" @click="clickHandle('test click', $event)">
-
-    <div class="userinfo" @click="bindViewTap">
+  <div class="container">
+    <div class="userinfo">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
       </div>
     </div>
 
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-    <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="doLogin">获取用户信息</button>
+    <button class="btn" open-type="getUserInfo" lang="zh_CN" @getuserinfo="doLogin">获取用户信息</button>
   </div>
 </template>
 
@@ -27,12 +15,15 @@
 import card from '@/components/card'
 import config from '@/config.js'
 import qcloud from 'wafer2-client-sdk'
+import { showSuccess } from '@/utils/index'
 
 export default {
   data () {
     return {
-      motto: 'Hello World1111',
-      userInfo: {}
+      userInfo: {
+        avatarUrl: 'http://image.shengxinjing.cn/rate/unlogin.png',
+        nickName: '...'
+      }
     }
   },
 
@@ -41,10 +32,10 @@ export default {
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
+    // bindViewTap () {
+    //   const url = '../logs/main'
+    //   wx.navigateTo({ url })
+    // },
     getUserInfo () {
       // 调用登录接口
       wx.login({
@@ -52,7 +43,7 @@ export default {
           wx.getUserInfo({
             success: (res) => {
               this.userInfo = res.userInfo
-              console.log('登录成功666', res.userInfo)
+              console.log('调用用户信息成功')
             }
           })
         }
@@ -64,11 +55,14 @@ export default {
     doLogin: function (e) {
       qcloud.setLoginUrl(config.loginUrl)
       qcloud.login({
-        success: function (userInfo) {
-          console.log('登录成功123', userInfo)
+        success: function (res) {
+          console.log('登录成功123', res)
+          // 将用户登录信息存储在本地缓存的指定的key中
+          wx.setStorageSync('userInfo', res)
+          showSuccess('登录成功')
         },
         fail: function (err) {
-          console.log('登录失败', err)
+          console.log('登录失败1111', err)
         }
       })
     }
@@ -81,40 +75,42 @@ export default {
 }
 </script>
 
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+<style lang='stylus' scoped>
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
+.userinfo
+  display flex
+  flex-direction column
+  align-items center
+  margin-bottom 100rpx
+  .userinfo-avatar
+    width 220rpx
+    height 220rpx
+    border-radius 50%
 
-.userinfo-nickname {
-  color: #aaa;
-}
 
-.usermotto {
-  margin-top: 150px;
-}
 
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
 
-.counter {
-  display: inline-block;
-  margin: 10px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
-}
+
+
+
+
+
+
+// .userinfo {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+// .userinfo-avatar {
+//   width: 228rpx;
+//   height: 228rpx;
+//   margin: 20rpx;
+//   border-radius: 50%;
+// }
+
+// .userinfo-nickname {
+//   color: #aaa;
+// }
+
 </style>

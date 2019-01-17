@@ -22,3 +22,10 @@ export default {
   formatNumber,
   formatTime
 }
+
+export function showSuccess (text) {
+  // 显示消息提示框
+  wx.showToast({
+    title: text
+  })
+}
