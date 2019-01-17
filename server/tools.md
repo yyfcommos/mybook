@@ -24,5 +24,6 @@ npm run initdb
 # 请保证已经执行了 npm install 安装了所需要的依赖
 node tools/initdb.js
 ```
+set password for root@localhost = password('wx86b80dbdefc5a62c'); 
 
 我们提供了初始化的 SQL 文件，你也可以用其他数据库工具（如 Navicat）直接导入 SQL 文件。

@@ -1,15 +1,17 @@
 {
 	"description": "项目配置文件。",
+	"qcloudRoot":"./server/",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx86b80dbefc5a62c",
+	"appid": "wx86b80dbdefc5a62c",
 	"projectname": "mybook",
 	"condition": {
 		"search": {

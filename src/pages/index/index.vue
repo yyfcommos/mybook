@@ -19,16 +19,19 @@
       <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
     </form>
     <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+    <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="doLogin">获取用户信息</button>
   </div>
 </template>
 
 <script>
 import card from '@/components/card'
+import config from '@/config.js'
+import qcloud from 'wafer2-client-sdk'
 
 export default {
   data () {
     return {
-      motto: 'Hello World',
+      motto: 'Hello World1111',
       userInfo: {}
     }
   },
@@ -49,6 +52,7 @@ export default {
           wx.getUserInfo({
             success: (res) => {
               this.userInfo = res.userInfo
+              console.log('登录成功666', res.userInfo)
             }
           })
         }
@@ -56,6 +60,17 @@ export default {
     },
     clickHandle (msg, ev) {
       console.log('clickHandle:', msg, ev)
+    },
+    doLogin: function (e) {
+      qcloud.setLoginUrl(config.loginUrl)
+      qcloud.login({
+        success: function (userInfo) {
+          console.log('登录成功123', userInfo)
+        },
+        fail: function (err) {
+          console.log('登录失败', err)
+        }
+      })
     }
   },
 
